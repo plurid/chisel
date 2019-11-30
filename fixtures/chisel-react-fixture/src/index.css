@@ -1,22 +1,17 @@
-/* *,
+*,
 *:after,
 *:before {
     box-sizing: border-box;
     font-kerning: auto;
     text-rendering: optimizeLegibility;
-} */
+}
 
-/* html, body {
+html, body {
     height: 100%;
     margin: 0;
     width: 100%;
-    background-color: red;
+    background-color: hsl(220, 20%, 20%);
     color: white;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', sans-serif;
     font-family: Ubuntu, -apple-system, BlinkMacSystemFont, Roboto,
         'Open Sans', 'Helvetica Neue', 'Lucida Sans', sans-serif;
-} */
-
-/* html {
-    overflow: hidden;
-} */
+}
