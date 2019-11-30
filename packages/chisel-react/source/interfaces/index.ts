@@ -14,7 +14,8 @@ export interface ChiselValue {
 
 export interface ChiselProperties {
     value: ChiselValue;
-    configuration: ChiselConfiguration;
+    atChange: any;
+    configuration?: ChiselConfiguration;
 }
 
 
