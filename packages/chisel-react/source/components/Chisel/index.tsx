@@ -13,6 +13,7 @@ import {
 const Chisel: React.FC<ChiselProperties> = (properties) => {
     const {
         value,
+        // atChange,
         // configuration,
     } = properties;
 
