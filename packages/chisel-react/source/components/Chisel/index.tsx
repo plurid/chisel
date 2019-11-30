@@ -1,5 +1,7 @@
 import React from 'react';
 
+import themes from '@plurid/plurid-themes';
+
 import {
     StyledChisel,
 } from './styled';
@@ -9,6 +11,8 @@ import {
 } from '../../interfaces';
 
 
+
+const theme = themes.plurid;
 
 const Chisel: React.FC<ChiselProperties> = (properties) => {
     const {
@@ -22,7 +26,9 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     } = value;
 
     return (
-        <StyledChisel>
+        <StyledChisel
+            theme={theme}
+        >
             {nodes.map(node => {
                 const {
                     text,
