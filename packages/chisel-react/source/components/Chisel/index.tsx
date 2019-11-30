@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+    useRef,
+} from 'react';
 
 import themes from '@plurid/plurid-themes';
 
@@ -15,6 +17,8 @@ import {
 const theme = themes.plurid;
 
 const Chisel: React.FC<ChiselProperties> = (properties) => {
+    const editor = useRef<HTMLDivElement>(null);
+
     const {
         value,
         // atChange,
@@ -27,6 +31,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
         console.log(event);
+        console.log(event.target);
     }
 
     return (
@@ -36,6 +41,10 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             tabIndex={0}
             contentEditable={true}
             suppressContentEditableWarning={true}
+            autoCorrect="false"
+            autoCapitalize="false"
+            spellCheck={false}
+            ref={editor}
         >
             {nodes.map(node => {
                 const {
