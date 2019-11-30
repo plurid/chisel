@@ -40,6 +40,10 @@
         "build": "yarn clean && yarn lint && yarn spec && yarn build.prod",
         "prepublishOnly": "yarn build"
     },
+    "peerDependencies": {
+        "redux": ">=4",
+        "redux-thunk": ">=2"
+    },
     "devDependencies": {
         "@babel/core": "^7.7.4",
         "@types/jest": "^24.0.23",
@@ -50,6 +54,8 @@
         "jest": "^24.9.0",
         "jest-config": "^24.9.0",
         "redux": "^4.0.4",
+        "redux-devtools-extension": "^2.13.8",
+        "redux-thunk": "^2.3.0",
         "rollup": "^1.27.5",
         "rollup-plugin-babel": "^4.3.3",
         "rollup-plugin-commonjs": "^10.1.0",
