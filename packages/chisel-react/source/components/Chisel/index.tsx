@@ -1,6 +1,10 @@
 import React from 'react';
 
 import {
+    StyledChisel,
+} from './styled';
+
+import {
     ChiselProperties,
 } from '../../interfaces';
 
@@ -9,6 +13,7 @@ import {
 const Chisel: React.FC<ChiselProperties> = (properties) => {
     const {
         value,
+        // configuration,
     } = properties;
 
     const {
@@ -16,7 +21,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     } = value;
 
     return (
-        <div>
+        <StyledChisel>
             {nodes.map(node => {
                 const {
                     text,
@@ -30,7 +35,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
                     </div>
                 );
             })}
-        </div>
+        </StyledChisel>
     );
 };
 
