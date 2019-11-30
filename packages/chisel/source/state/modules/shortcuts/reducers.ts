@@ -7,16 +7,24 @@ import {
 
 const initialState = {
     global: true,
-}
+};
 
 const selectedThemeReducer = (state = initialState, action: any) => {
     switch(action.type) {
         case SET_GLOBAL_SHORTCUTS:
-            return { ...state, global: true };
+            return {
+                ...state,
+                global: true,
+            };
         case UNSET_GLOBAL_SHORTCUTS:
-            return { ...state, global: false };
+            return {
+                ...state,
+                global: false,
+            };
         default:
-            return state;
+            return {
+                ...state,
+            };
     }
 }
 

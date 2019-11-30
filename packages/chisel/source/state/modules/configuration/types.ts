@@ -1,19 +1,7 @@
-import {
-    PluridConfiguration,
-} from '@plurid/plurid-data';
-
-
-
 export const SET_CONFIGURATION = 'SET_CONFIGURATION';
 export interface SetConfigurationAction {
     type: typeof SET_CONFIGURATION;
-    payload: PluridConfiguration;
-}
-
-
-export const SET_MICRO = 'SET_MICRO';
-export interface SetMicroAction {
-    type: typeof SET_MICRO;
+    payload: any;
 }
 
 
@@ -31,32 +19,12 @@ export interface SetConfigurationThemeInteractionAction {
 }
 
 
-export const TOGGLE_UI_TOOLBAR_HIDE = 'TOGGLE_UI_TOOLBAR_HIDE';
-export interface ToggleUIToolbarHideAction {
-    type: typeof TOGGLE_UI_TOOLBAR_HIDE;
-}
 
-
-export const TOGGLE_UI_TOOLBAR_ALWAYS_SHOW_ICONS = 'TOGGLE_UI_TOOLBAR_ALWAYS_SHOW_ICONS';
-export interface ToggleUIToolbarAlwaysShowIconsAction {
-    type: typeof TOGGLE_UI_TOOLBAR_ALWAYS_SHOW_ICONS;
-}
-
-
-export const TOGGLE_UI_TOOLBAR_ALWAYS_SHOW_TRANSFORM_BUTTONS = 'TOGGLE_UI_TOOLBAR_ALWAYS_SHOW_TRANSFORM_BUTTONS';
-export interface ToggleUIToolbarAlwaysTransformButtonsAction {
-    type: typeof TOGGLE_UI_TOOLBAR_ALWAYS_SHOW_TRANSFORM_BUTTONS;
-}
-
-
-export interface ConfigurationState extends PluridConfiguration {
+export interface ConfigurationState {
+    theme: any;
 }
 
 
 export type ConfigurationActionsType = SetConfigurationAction
-    | SetMicroAction
     | SetConfigurationThemeGeneralAction
-    | SetConfigurationThemeInteractionAction
-    | ToggleUIToolbarHideAction
-    | ToggleUIToolbarAlwaysShowIconsAction
-    | ToggleUIToolbarAlwaysTransformButtonsAction;
+    | SetConfigurationThemeInteractionAction;
