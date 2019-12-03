@@ -3,7 +3,7 @@ import themes from '@plurid/plurid-themes';
 
 
 export interface ChiselNode {
-    type: 'paragraph' | 'heading';
+    type?: 'paragraph' | 'heading';
     text: string;
 }
 
@@ -16,7 +16,11 @@ export interface ChiselValue {
 export interface ChiselProperties {
     value: ChiselValue;
     configuration?: ChiselConfiguration;
-    atChange(event: React.KeyboardEvent<HTMLDivElement>, value: string): void;
+
+    atChange(
+        event: React.KeyboardEvent<HTMLDivElement>,
+        value: ChiselValue,
+    ): void;
 }
 
 
