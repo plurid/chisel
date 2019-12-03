@@ -13,6 +13,7 @@ import {
 import {
     ChiselProperties,
     ChiselValue,
+    ChiselNode,
 } from '../../interfaces';
 
 
@@ -50,9 +51,24 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
 
     const handleKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
         const value = editor.current!.innerText;
+        const splitValue = value.split('\n');
+
+        const editorNodes = splitValue.map(nodeText => {
+            const node: ChiselNode = {
+                type: 'paragraph',
+                text: nodeText,
+            };
+            return node;
+        });
+        const editorValue: ChiselValue = {
+            nodes: editorNodes,
+        };
 
         if (atChange) {
-            atChange(event, value);
+            atChange(
+                event,
+                editorValue,
+            );
         }
     }
 
