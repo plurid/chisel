@@ -22,8 +22,6 @@ import {
 
 
 
-const theme = themes.plurid;
-
 const emptyEditorValue: ChiselValue = {
     nodes: [],
 };
@@ -34,7 +32,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     const {
         value,
         atChange,
-        // configuration,
+        configuration,
     } = properties;
 
     const {
@@ -42,16 +40,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     } = value;
 
     const [editorValue, setEditorValue] = useState<ChiselValue>({...emptyEditorValue});
-
-    useEffect(() => {
-        if (nodes) {
-            setEditorValue({
-                nodes,
-            });
-        }
-    }, [
-        nodes,
-    ]);
+    const [theme, seTheme] = useState(themes.plurid);
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
         if (event.key === 'Tab') {
@@ -93,6 +82,29 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             // console.log('selection', selection);
         }
     }
+
+    useEffect(() => {
+        if (nodes) {
+            setEditorValue({
+                nodes,
+            });
+        }
+    }, [
+        nodes,
+    ]);
+
+    useEffect(() => {
+        if (configuration) {
+            if (
+                typeof configuration.theme === 'string'
+                && themes[configuration.theme]
+            ) {
+                seTheme(themes[configuration.theme]);
+            }
+        }
+    }, [
+        configuration,
+    ]);
 
     return (
         <StyledChisel
