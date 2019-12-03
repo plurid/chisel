@@ -3,19 +3,20 @@ import themes from '@plurid/plurid-themes';
 
 
 export interface ChiselNode {
+    type: 'paragraph' | 'heading';
     text: string;
 }
 
 
 export interface ChiselValue {
-    nodes: ChiselNode[]
+    nodes: ChiselNode[];
 }
 
 
 export interface ChiselProperties {
     value: ChiselValue;
-    atChange: any;
     configuration?: ChiselConfiguration;
+    atChange(event: React.KeyboardEvent<HTMLDivElement>, value: string): void;
 }
 
 

@@ -22,6 +22,7 @@ const App = () => {
         <div>
             <Chisel
                 value={value}
+                atChange={(event, value) => console.log('value', value)}
             />
         </div>
     );
