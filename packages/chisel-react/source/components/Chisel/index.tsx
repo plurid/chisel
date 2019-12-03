@@ -49,9 +49,15 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         nodes,
     ]);
 
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === 'Tab') {
+            event.preventDefault();
+        }
+    }
+
     const handleKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
         const value = editor.current!.innerText;
-        const splitValue = value.split('\n');
+        const splitValue = value.split(/\n/);
 
         const editorNodes = splitValue.map(nodeText => {
             const node: ChiselNode = {
@@ -75,6 +81,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     return (
         <StyledChisel
             theme={theme}
+            onKeyDown={handleKeyDown}
             onKeyUp={handleKeyUp}
             tabIndex={0}
             contentEditable={true}
