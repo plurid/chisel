@@ -16,6 +16,10 @@ import {
     ChiselNode,
 } from '../../interfaces';
 
+import {
+    getSelectionCaretAndLine,
+} from '../../utilities';
+
 
 
 const theme = themes.plurid;
@@ -56,6 +60,11 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     }
 
     const handleKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        const selection = getSelectionCaretAndLine(editor.current);
+        if (selection) {
+            // console.log('selection', selection);
+        }
+
         const value = editor.current!.innerText;
         const splitValue = value.split(/\n/);
 
@@ -78,9 +87,17 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         }
     }
 
+    const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const selection = getSelectionCaretAndLine(editor.current);
+        if (selection) {
+            // console.log('selection', selection);
+        }
+    }
+
     return (
         <StyledChisel
             theme={theme}
+            onClick={handleClick}
             onKeyDown={handleKeyDown}
             onKeyUp={handleKeyUp}
             tabIndex={0}
