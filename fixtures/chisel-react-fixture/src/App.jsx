@@ -23,6 +23,11 @@ const App = () => {
             <Chisel
                 value={value}
                 atChange={(event, value) => console.log('value', value)}
+                // configuration={
+                //     {
+                //         theme: 'denote',
+                //     }
+                // }
             />
         </div>
     );
