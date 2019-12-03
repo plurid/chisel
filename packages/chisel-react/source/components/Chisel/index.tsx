@@ -1,5 +1,7 @@
 import React, {
     useRef,
+    useState,
+    useEffect,
 } from 'react';
 
 import themes from '@plurid/plurid-themes';
@@ -10,18 +12,23 @@ import {
 
 import {
     ChiselProperties,
+    ChiselValue,
 } from '../../interfaces';
 
 
 
 const theme = themes.plurid;
 
+const emptyEditorValue: ChiselValue = {
+    nodes: [],
+};
+
 const Chisel: React.FC<ChiselProperties> = (properties) => {
     const editor = useRef<HTMLDivElement>(null);
 
     const {
         value,
-        // atChange,
+        atChange,
         // configuration,
     } = properties;
 
@@ -29,15 +36,30 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         nodes,
     } = value;
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-        console.log(event);
-        console.log(event.target);
+    const [editorValue, setEditorValue] = useState<ChiselValue>({...emptyEditorValue});
+
+    useEffect(() => {
+        if (nodes) {
+            setEditorValue({
+                nodes,
+            });
+        }
+    }, [
+        nodes,
+    ]);
+
+    const handleKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        const value = editor.current!.innerText;
+
+        if (atChange) {
+            atChange(event, value);
+        }
     }
 
     return (
         <StyledChisel
             theme={theme}
-            onKeyDown={handleKeyDown}
+            onKeyUp={handleKeyUp}
             tabIndex={0}
             contentEditable={true}
             suppressContentEditableWarning={true}
@@ -46,7 +68,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             spellCheck={false}
             ref={editor}
         >
-            {nodes.map(node => {
+            {editorValue.nodes.map(node => {
                 const {
                     text,
                 } = node;
