@@ -49,10 +49,10 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     }
 
     const handleKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
-        const selection = getSelectionCaretAndLine(editor.current);
-        if (selection) {
-            // console.log('selection', selection);
-        }
+        // const selection = getSelectionCaretAndLine(editor.current);
+        // if (selection) {
+        //     // console.log('selection', selection);
+        // }
 
         const value = editor.current!.innerText;
         const splitValue = value.split(/\n/);
