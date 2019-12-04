@@ -12,5 +12,5 @@ export const StyledChisel = styled.div`
 
     outline: none;
     white-space: pre-wrap;
-    word-wrap: break-word;
+    word-break: break-word;
 `;
