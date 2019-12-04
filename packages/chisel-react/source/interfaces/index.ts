@@ -1,3 +1,5 @@
+import React from 'react';
+
 import themes from '@plurid/plurid-themes';
 
 
@@ -16,6 +18,8 @@ export interface ChiselValue {
 export interface ChiselProperties {
     value: ChiselValue;
     configuration?: ChiselConfiguration;
+
+    style?: React.CSSProperties;
 
     atChange(
         event: React.KeyboardEvent<HTMLDivElement>,

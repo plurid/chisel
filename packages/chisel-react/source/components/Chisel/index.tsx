@@ -16,9 +16,9 @@ import {
     ChiselNode,
 } from '../../interfaces';
 
-import {
-    getSelectionCaretAndLine,
-} from '../../utilities';
+// import {
+//     getSelectionCaretAndLine,
+// } from '../../utilities';
 
 
 
@@ -33,6 +33,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         value,
         atChange,
         configuration,
+        style,
     } = properties;
 
     const {
@@ -77,10 +78,10 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     }
 
     const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        const selection = getSelectionCaretAndLine(editor.current);
-        if (selection) {
-            // console.log('selection', selection);
-        }
+        // const selection = getSelectionCaretAndLine(editor.current);
+        // if (selection) {
+        //     // console.log('selection', selection);
+        // }
     }
 
     useEffect(() => {
@@ -119,6 +120,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             autoCapitalize="false"
             spellCheck={false}
             ref={editor}
+            style={{...style}}
         >
             {editorValue.nodes.map(node => {
                 const {
