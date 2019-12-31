@@ -47,15 +47,23 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         // if (event.key === 'Tab') {
         //     event.preventDefault();
         // }
-        // if (event.key === 'Enter') {
-        //     event.preventDefault();
-        // }
+        if (event.key === 'Enter') {
+            // event.preventDefault();
+            window.document.execCommand('insertHTML', false, '\n');
+        }
     }
 
     const handleKeyUp = (
         event: React.KeyboardEvent<HTMLDivElement>,
     ) => {
         const value = editor.current!.innerText;
+        console.log(editor.current!.innerText);
+        console.log('----');
+        console.log(editor.current!.textContent);
+        console.log('----');
+        console.log(editor.current!.innerHTML);
+        console.log('----');
+
         const splitValue = value
             .split(/\n/);
 
@@ -129,6 +137,9 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
                 return (
                     <div
                         key={Math.random() + ''}
+                        style={{
+                            margin: 0,
+                        }}
                     >
                         {text}
                     </div>
