@@ -18,7 +18,9 @@ const value: ChiselValue = {
 };
 
 const App = () => {
-    const atChange = (value, event) => {
+    const atChange = (
+        value: ChiselValue,
+    ) => {
         console.log('value', value);
     }
 
