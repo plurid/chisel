@@ -53,7 +53,7 @@ interface IPieceTable {
 
 
 class PieceTable implements IPieceTable {
-    private options: PieceTableOptions;
+    private options?: PieceTableOptions;
     private original: string;
     private add: string = '';
     private pieces: Piece[] = [];
@@ -66,7 +66,7 @@ class PieceTable implements IPieceTable {
 
     constructor(
         original: string,
-        options: PieceTableOptions,
+        options?: PieceTableOptions,
     ) {
         this.options = options;
 
