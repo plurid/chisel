@@ -26,6 +26,64 @@ import {
 
 
 
+const createRange = (
+    node: any,
+    chars: any,
+    range?: any,
+) =>{
+    if (!range) {
+        range = document.createRange()
+        range.selectNode(node);
+        range.setStart(node, 0);
+    }
+
+    if (chars.count === 0) {
+        range.setEnd(node, chars.count);
+    } else if (node && chars.count >0) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            if (node.textContent.length < chars.count) {
+                chars.count -= node.textContent.length;
+            } else {
+                 range.setEnd(node, chars.count);
+                 chars.count = 0;
+            }
+        } else {
+            for (var lp = 0; lp < node.childNodes.length; lp++) {
+                range = createRange(node.childNodes[lp], chars, range);
+
+                if (chars.count === 0) {
+                   break;
+                }
+            }
+        }
+   }
+
+   return range;
+};
+
+const setCurrentCursorPosition = (
+    chars: any,
+    element: any
+) => {
+    if (chars >= 0) {
+        const selection = window.getSelection();
+        const range = createRange(element.parentNode, { count: chars });
+
+        if (range && selection) {
+            range.collapse(false);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    }
+};
+
+const getPastedText = (
+    event: React.ClipboardEvent<HTMLDivElement>,
+) => {
+    return event.clipboardData.getData('text');
+}
+
+
 const emptyEditorValue: ChiselValue = {
     nodes: [],
 };
@@ -36,25 +94,28 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     const cursor = useRef(0);
 
     const {
-        value,
+        // value,
         atChange,
         configuration,
         style,
     } = properties;
 
-    const {
-        nodes,
-    } = value;
+    // const {
+    //     nodes,
+    // } = value;
 
     const [text, setText] = useState('');
 
-    const [editorValue, setEditorValue] = useState<ChiselValue>({...emptyEditorValue});
+    // const [editorValue, setEditorValue] = useState<ChiselValue>({...emptyEditorValue});
     const [theme, seTheme] = useState(themes.plurid);
 
     const handleKeyDown = (
         event: React.KeyboardEvent<HTMLDivElement>,
     ) => {
-        if (event.key === 'v' && !event.ctrlKey) {
+        if (
+            event.key === 'v' &&
+            (event.ctrlKey || event.metaKey)
+        ) {
             return;
         }
 
@@ -65,6 +126,14 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         if (printableKey) {
             pieceTable.current.insert(event.key, cursor.current);
             cursor.current += 1;
+            // setCurrentCursorPosition(cursor.current + 1, editor.current);
+            const selObj = window.getSelection();
+            console.log(selObj);
+            const selRange = selObj?.getRangeAt(0);
+            selRange?.collapse();
+            console.log(selRange);
+
+
             setText(pieceTable.current.getSequence());
         }
 
@@ -141,12 +210,6 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             cursor.current = selection.caret;
             console.log('selection', selection);
         }
-    }
-
-    const getPastedText = (
-        event: React.ClipboardEvent<HTMLDivElement>,
-    ) => {
-        return event.clipboardData.getData('text');
     }
 
     const handlePaste = (
