@@ -109,19 +109,65 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     // const [editorValue, setEditorValue] = useState<ChiselValue>({...emptyEditorValue});
     const [theme, seTheme] = useState(themes.plurid);
 
-    const handleKeyDown = (
+
+    const checkForUnpreventableKeys = (
         event: React.KeyboardEvent<HTMLDivElement>,
-    ) => {
+    ): boolean => {
+        // Check for Cut.
+        if (
+            event.key === 'x' &&
+            (event.ctrlKey || event.metaKey)
+        ) {
+            return true;
+        }
+
+        // Check for Copy.
+        if (
+            event.key === 'c' &&
+            (event.ctrlKey || event.metaKey)
+        ) {
+            return true;
+        }
+
+        // Check for Paste.
         if (
             event.key === 'v' &&
             (event.ctrlKey || event.metaKey)
         ) {
-            return;
+            return true;
         }
+
+        // Check for Refresh.
         if (
             event.key === 'r' &&
             (event.ctrlKey || event.metaKey)
         ) {
+            return true;
+        }
+
+        // Check for Selection.
+        if (
+            event.key === 'a' &&
+            (event.ctrlKey || event.metaKey)
+        ) {
+            return true;
+        }
+
+        // Check for Tab Close.
+        if (
+            event.key === 'w' &&
+            (event.ctrlKey || event.metaKey)
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    const handleKeyDown = (
+        event: React.KeyboardEvent<HTMLDivElement>,
+    ) => {
+        if (checkForUnpreventableKeys(event)) {
             return;
         }
 
