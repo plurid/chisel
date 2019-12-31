@@ -106,7 +106,7 @@ class PieceTable implements IPieceTable {
 
         // If this is reached, the offset is greater than the sequence length
         throw this.outOfBoundsError;
-    };
+    }
 
 
     insert (
@@ -226,7 +226,7 @@ class PieceTable implements IPieceTable {
         );
 
         return;
-    };
+    }
 
 
     getSequence () {
@@ -240,7 +240,7 @@ class PieceTable implements IPieceTable {
             }
         });
         return str;
-    };
+    }
 
 
     stringAt (
@@ -287,7 +287,7 @@ class PieceTable implements IPieceTable {
         }
 
         return str === '' ? undefined : str;
-    };
+    }
 
 
     /**
@@ -321,7 +321,7 @@ class PieceTable implements IPieceTable {
                 }
             }
         };
-    };
+    }
 }
 
 
