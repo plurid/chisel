@@ -77,12 +77,45 @@ const setCurrentCursorPosition = (
     }
 };
 
+function getCaretPosition(el: any){
+    try {
+        var caretOffset = 0, sel;
+        if (typeof window.getSelection !== "undefined") {
+          var range = window.getSelection()!.getRangeAt(0);
+          var selected = range.toString().length;
+          var preCaretRange = range.cloneRange();
+          preCaretRange.selectNodeContents(el);
+          preCaretRange.setEnd(range.endContainer, range.endOffset);
+          caretOffset = preCaretRange.toString().length - selected;
+        }
+        return caretOffset;
+    } catch (error) {
+        return;
+    }
+}
+
+function setCaretPosition(data: any) {
+    try {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        console.log(range);
+
+        range.setStart(data.node, data.position);
+        range.collapse(true);
+
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+    } catch (error) {
+        return;
+    }
+}
+
+
 const getPastedText = (
     event: React.ClipboardEvent<HTMLDivElement>,
 ) => {
     return event.clipboardData.getData('text');
 }
-
 
 const emptyEditorValue: ChiselValue = {
     nodes: [],
@@ -179,7 +212,22 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             pieceTable.current.insert(event.key, cursor.current);
             cursor.current += 1;
             console.log(cursor.current);
-            setCurrentCursorPosition(cursor.current, editor.current);
+
+            // if (editor.current) {
+            //     console.log(editor.current.childNodes[0]);
+            //     if (editor.current.childNodes[0]) {
+            //         setCaretPosition(
+            //             {
+            //                 node: editor.current.childNodes[0],
+            //                 position: cursor.current,
+            //             }
+            //         );
+            //         // editor.current.childNodes[0].focus();
+            //     }
+            // }
+
+            // editor.current?.focus();
+            // setCurrentCursorPosition(cursor.current, editor.current);
             // if (editor.current && editor.current.childNodes) {
             //     const range = document.createRange();
             //     console.log(range);
@@ -268,6 +316,9 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     ) => {
         const selection = getSelectionCaretAndLine(editor.current);
+        // const sel = getCaretPosition(editor.current);
+        // console.log('aaa', sel);
+
         if (selection) {
             cursor.current = selection.caret;
             console.log('selection', selection);
