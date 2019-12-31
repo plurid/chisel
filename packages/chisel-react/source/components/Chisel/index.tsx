@@ -178,23 +178,23 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         if (printableKey) {
             pieceTable.current.insert(event.key, cursor.current);
             cursor.current += 1;
-            // setCurrentCursorPosition(cursor.current + 1, editor.current);
-            if (editor.current && editor.current.childNodes) {
-                const range = document.createRange();
-                console.log(range);
-                console.log(editor.current.childNodes);
-                const textNode = editor.current.childNodes[0];
-                console.log(textNode);
-                // range.setStart(editor.current?.childNodes[0], 1);
-                // range.collapse();
-            }
+            console.log(cursor.current);
+            setCurrentCursorPosition(cursor.current, editor.current);
+            // if (editor.current && editor.current.childNodes) {
+            //     const range = document.createRange();
+            //     console.log(range);
+            //     console.log(editor.current.childNodes);
+            //     const textNode = editor.current.childNodes[0];
+            //     console.log(textNode);
+            //     // range.setStart(editor.current?.childNodes[0], 1);
+            //     // range.collapse();
+            // }
 
             // const selObj = window.getSelection();
             // console.log(selObj);
             // const selRange = selObj?.getRangeAt(0);
             // selRange?.collapse();
             // console.log(selRange);
-
 
             setText(pieceTable.current.getSequence());
         }
