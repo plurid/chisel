@@ -22,8 +22,8 @@ export interface ChiselProperties {
     style?: React.CSSProperties;
 
     atChange(
-        event: React.KeyboardEvent<HTMLDivElement>,
         value: ChiselValue,
+        event: React.KeyboardEvent<HTMLDivElement>,
     ): void;
 }
 

@@ -44,19 +44,20 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     const [theme, seTheme] = useState(themes.plurid);
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-        if (event.key === 'Tab') {
-            event.preventDefault();
-        }
+        // if (event.key === 'Tab') {
+        //     event.preventDefault();
+        // }
+        // if (event.key === 'Enter') {
+        //     event.preventDefault();
+        // }
     }
 
-    const handleKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
-        // const selection = getSelectionCaretAndLine(editor.current);
-        // if (selection) {
-        //     // console.log('selection', selection);
-        // }
-
+    const handleKeyUp = (
+        event: React.KeyboardEvent<HTMLDivElement>,
+    ) => {
         const value = editor.current!.innerText;
-        const splitValue = value.split(/\n/);
+        const splitValue = value
+            .split(/\n/);
 
         const editorNodes = splitValue.map(nodeText => {
             const node: ChiselNode = {
@@ -69,12 +70,10 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             nodes: editorNodes,
         };
 
-        if (atChange) {
-            atChange(
-                event,
-                editorValue,
-            );
-        }
+        atChange(
+            editorValue,
+            event,
+        );
     }
 
     const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
