@@ -54,6 +54,10 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     const handleKeyDown = (
         event: React.KeyboardEvent<HTMLDivElement>,
     ) => {
+        if (event.key === 'v' && !event.ctrlKey) {
+            return;
+        }
+
         event.preventDefault();
 
         const printableKey = event.key.length === 1;
@@ -139,6 +143,23 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         }
     }
 
+    const getPastedText = (
+        event: React.ClipboardEvent<HTMLDivElement>,
+    ) => {
+        return event.clipboardData.getData('text');
+    }
+
+    const handlePaste = (
+        event: React.ClipboardEvent<HTMLDivElement>,
+    ) => {
+        event.preventDefault();
+        const pastedText = getPastedText(event);
+        const pastedTextLength = pastedText.length;
+        pieceTable.current.insert(pastedText, cursor.current);
+        cursor.current += pastedTextLength;
+        setText(pieceTable.current.getSequence());
+    }
+
     // useEffect(() => {
     //     if (nodes) {
     //         setEditorValue({
@@ -168,6 +189,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             onClick={handleClick}
             onKeyDown={handleKeyDown}
             onKeyUp={handleKeyUp}
+            onPaste={handlePaste}
             tabIndex={0}
             contentEditable={true}
             suppressContentEditableWarning={true}
