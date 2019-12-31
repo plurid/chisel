@@ -359,6 +359,11 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
+"@plurid/chisel@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@plurid/chisel/-/chisel-0.1.0.tgz#6d251d44ac1edec9c8edf381b3fdcd5fc655a186"
+  integrity sha512-ngEalGO6ZZx18ughq4VQU2afGeMo9CblYLnH2XMQFQMVG9cSs9qLNn0VmYy25KwmP8E2/ZdcG5Wg64vkKpAQIg==
+
 "@plurid/plurid-themes@^0.1.22":
   version "0.1.22"
   resolved "https://registry.yarnpkg.com/@plurid/plurid-themes/-/plurid-themes-0.1.22.tgz#0e2a122d3e45db626288dfb04548e8a3664a434e"
@@ -4854,6 +4859,11 @@ realpath-native@^1.1.0:
   integrity sha512-wlgPA6cCIIg9gKz0fgAPjnzh4yR/LnXovwuo9hvyGvx3h8nX4+/iLZplfUWasXpqD8BdnGnP5njOFjkUwPzvjA==
   dependencies:
     util.promisify "^1.0.0"
+
+redux-thunk@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
+  integrity sha512-km6dclyFnmcvxhAcrQV2AkZmPQjzPDjgVlQtR0EQjxZPyJ0BnMf3in1ryuR8A2qU0HldVRfxYXbFSKlI3N7Slw==
 
 redux@^4.0.5:
   version "4.0.5"
