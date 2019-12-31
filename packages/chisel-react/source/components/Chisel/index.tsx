@@ -197,6 +197,11 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         return false;
     }
 
+    const alterCursorAndSetText = (cursorStep: number) => {
+        cursor.current += cursorStep;
+        setText(pieceTable.current.getSequence());
+    }
+
     const handleKeyDown = (
         event: React.KeyboardEvent<HTMLDivElement>,
     ) => {
@@ -210,8 +215,11 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
 
         if (printableKey) {
             pieceTable.current.insert(event.key, cursor.current);
-            cursor.current += 1;
+            // cursor.current += 1;
+            // setText(pieceTable.current.getSequence());
             console.log(cursor.current);
+
+            alterCursorAndSetText(1);
 
             // if (editor.current) {
             //     console.log(editor.current.childNodes[0]);
@@ -243,22 +251,35 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             // const selRange = selObj?.getRangeAt(0);
             // selRange?.collapse();
             // console.log(selRange);
-
-            setText(pieceTable.current.getSequence());
         }
 
-        if (event.key === 'Backspace') {
+        if (event.key === 'Backspace' && !event.shiftKey) {
             if (cursor.current > 0) {
                 pieceTable.current.delete(cursor.current - 1, 1);
-                cursor.current -= 1;
-                setText(pieceTable.current.getSequence());
+
+                alterCursorAndSetText(-1);
+                // cursor.current -= 1;
+                // setText(pieceTable.current.getSequence());
+            }
+        }
+
+        if (event.key === 'Backspace' && event.shiftKey) {
+            if (cursor.current > 0) {
+                // TODO remove current word
+                pieceTable.current.delete(cursor.current - 1, 1);
+
+                alterCursorAndSetText(-1);
+                // cursor.current -= 1;
+                // setText(pieceTable.current.getSequence());
             }
         }
 
         if (event.key === 'Enter') {
             pieceTable.current.insert('\n', cursor.current);
-            cursor.current += 1;
-            setText(pieceTable.current.getSequence());
+
+            alterCursorAndSetText(1);
+            // cursor.current += 1;
+            // setText(pieceTable.current.getSequence());
         }
 
         // console.log(cursor.current);
