@@ -20,9 +20,9 @@ import {
     ChiselNode,
 } from '../../interfaces';
 
-// import {
-//     getSelectionCaretAndLine,
-// } from '../../utilities';
+import {
+    getSelectionCaretAndLine,
+} from '../../utilities';
 
 
 
@@ -132,10 +132,11 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     const handleClick = (
         event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     ) => {
-        // const selection = getSelectionCaretAndLine(editor.current);
-        // if (selection) {
-        //     // console.log('selection', selection);
-        // }
+        const selection = getSelectionCaretAndLine(editor.current);
+        if (selection) {
+            cursor.current = selection.caret;
+            console.log('selection', selection);
+        }
     }
 
     // useEffect(() => {
