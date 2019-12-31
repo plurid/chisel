@@ -6,7 +6,7 @@
     "license": "MIT",
     "private": true,
     "dependencies": {
-        "@plurid/chisel-react": "0.1.5",
+        "@plurid/chisel-react": "0.1.6",
         "@plurid/plurid-themes": "^0.1.22",
         "@types/jest": "24.0.25",
         "@types/node": "13.1.2",
@@ -24,6 +24,9 @@
         "build": "react-scripts build",
         "test": "react-scripts test --env=jsdom",
         "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
     },
     "browserslist": {
         "production": [
