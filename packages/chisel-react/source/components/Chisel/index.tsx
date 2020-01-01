@@ -137,6 +137,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         // value,
         atChange,
         configuration,
+        enhancers,
         style,
     } = properties;
 

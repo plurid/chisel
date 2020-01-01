@@ -2,6 +2,7 @@ import React from 'react';
 
 import Chisel, {
     ChiselValue,
+    ChiselEnhancerFormatBar,
 } from '@plurid/chisel-react';
 
 
@@ -34,6 +35,11 @@ const App = () => {
                 //         theme: 'denote',
                 //     }
                 // }
+                enhancers={
+                    [
+                        ChiselEnhancerFormatBar,
+                    ]
+                }
             />
         </div>
     );
