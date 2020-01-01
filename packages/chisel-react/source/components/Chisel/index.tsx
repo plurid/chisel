@@ -66,6 +66,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     const editor = useRef<HTMLDivElement>(null);
     const pieceTable = useRef(new PieceTable(''));
     const cursor = useRef(0);
+    const lines = useRef(1);
 
     const forceUpdate = useForceUpdate();
 
@@ -211,6 +212,24 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             }
         }
 
+        if (event.key === 'ArrowUp') {
+            const text = pieceTable.current.getSequence();
+
+            if (text[cursor.current - 1]) {
+                cursor.current -= 1;
+                forceUpdate();
+            }
+        }
+
+        if (event.key === 'ArrowDown') {
+            const text = pieceTable.current.getSequence();
+
+            if (text[cursor.current]) {
+                cursor.current += 1;
+                forceUpdate();
+            }
+        }
+
         if (event.key === 'Tab') {
             pieceTable.current.insert('    ', cursor.current);
             alterCursorAndSetText(4);
@@ -218,6 +237,8 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
 
         if (event.key === 'Enter') {
             pieceTable.current.insert('\n', cursor.current);
+            lines.current += 1;
+            console.log(lines.current);
 
             alterCursorAndSetText(1);
         }
@@ -320,7 +341,10 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             autoCapitalize="false"
             spellCheck={false}
             ref={editor}
-            style={{...style}}
+            style={{
+                height: 40 + lines.current * 16 + 'px',
+                ...style,
+            }}
         >
             {renderText()}
         </StyledChisel>
