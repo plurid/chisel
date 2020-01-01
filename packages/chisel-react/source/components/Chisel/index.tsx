@@ -350,7 +350,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             spellCheck={false}
             ref={editor}
             style={{
-                height: 40 + lines.current * 16 + 'px',
+                // height: 40 + lines.current * 16 + 'px',
                 ...style,
             }}
         >
