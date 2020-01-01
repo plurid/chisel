@@ -311,6 +311,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         const text = pieceTable.current.getSequence();
         const newLines = text.split('\n').length;
         lines.current = newLines;
+        forceUpdate();
     }, [
         text,
     ]);
