@@ -4,14 +4,16 @@ import themes from '@plurid/plurid-themes';
 
 
 
-export interface ChiselNode {
-    type?: 'paragraph' | 'heading';
+export interface ChiselValue {
     text: string;
+    marks?: ChiselMark[];
 }
 
 
-export interface ChiselValue {
-    nodes: ChiselNode[];
+export interface ChiselMark {
+    start: number;
+    length: number;
+    type: any;
 }
 
 
@@ -31,6 +33,7 @@ export interface ChiselProperties {
 
 export interface ChiselConfiguration {
     theme: keyof typeof themes | ChiselConfigurationTheme;
+    enhanced: 'none' | 'standard' | 'advanced';
 }
 
 
