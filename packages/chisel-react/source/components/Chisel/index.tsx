@@ -290,6 +290,33 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             }
         }
 
+        if (event.key === 'Delete') {
+            const text = pieceTable.current.getSequence();
+
+            if (text[cursor.current]) {
+                pieceTable.current.delete(cursor.current, 1);
+
+                alterCursorAndSetText(0);
+            }
+        }
+
+        if (event.key === 'ArrowLeft') {
+            const text = pieceTable.current.getSequence();
+
+            if (text[cursor.current]) {
+                cursor.current -= 1;
+            }
+        }
+
+        if (event.key === 'ArrowRight') {
+            const text = pieceTable.current.getSequence();
+
+            if (text[cursor.current]) {
+                cursor.current += 1;
+            }
+        }
+
+
         if (event.key === 'Enter') {
             pieceTable.current.insert('\n', cursor.current);
 
