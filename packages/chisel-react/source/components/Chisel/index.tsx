@@ -237,8 +237,6 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
 
         if (event.key === 'Enter') {
             pieceTable.current.insert('\n', cursor.current);
-            lines.current += 1;
-            console.log(lines.current);
 
             alterCursorAndSetText(1);
         }
@@ -306,6 +304,15 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         }
     }, [
         initialText,
+    ]);
+
+    /** Handle Lines */
+    useEffect(() => {
+        const text = pieceTable.current.getSequence();
+        const newLines = text.split('\n').length;
+        lines.current += newLines;
+    }, [
+        text,
     ]);
 
     const renderText = () => {
