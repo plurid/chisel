@@ -202,6 +202,28 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         setText(pieceTable.current.getSequence());
     }
 
+    const getCurrentWord = (
+        text: string,
+        currentCursor: number,
+    ) => {
+        let start = currentCursor;
+        let end = currentCursor;
+
+        while (text[start - 1] && text[start] !== ' ') {
+            start = start - 1;
+        }
+
+        while (text[end] && text[end] !== ' ') {
+            end = end + 1;
+        }
+
+        return {
+            start,
+            end,
+            length: end - start,
+        };
+    }
+
     const handleKeyDown = (
         event: React.KeyboardEvent<HTMLDivElement>,
     ) => {
@@ -212,13 +234,9 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         event.preventDefault();
 
         const printableKey = event.key.length === 1;
-
         if (printableKey) {
             pieceTable.current.insert(event.key, cursor.current);
-            // cursor.current += 1;
-            // setText(pieceTable.current.getSequence());
             console.log(cursor.current);
-
             alterCursorAndSetText(1);
 
             // if (editor.current) {
@@ -258,19 +276,17 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
                 pieceTable.current.delete(cursor.current - 1, 1);
 
                 alterCursorAndSetText(-1);
-                // cursor.current -= 1;
-                // setText(pieceTable.current.getSequence());
             }
         }
 
         if (event.key === 'Backspace' && event.shiftKey) {
             if (cursor.current > 0) {
-                // TODO remove current word
-                pieceTable.current.delete(cursor.current - 1, 1);
+                const currentWord = getCurrentWord(pieceTable.current.getSequence(), cursor.current);
 
-                alterCursorAndSetText(-1);
-                // cursor.current -= 1;
-                // setText(pieceTable.current.getSequence());
+                pieceTable.current.delete(currentWord.start, currentWord.length);
+
+                cursor.current = currentWord.start;
+                setText(pieceTable.current.getSequence());
             }
         }
 
@@ -278,59 +294,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             pieceTable.current.insert('\n', cursor.current);
 
             alterCursorAndSetText(1);
-            // cursor.current += 1;
-            // setText(pieceTable.current.getSequence());
         }
-
-        // console.log(cursor.current);
-        // console.log(editor.current?.childNodes[0]);
-
-        // const range = document.createRange();
-        // const selection = window.getSelection();
-        // range.setStart(editor.current!.childNodes[0], cursor.current);
-        // range.collapse(true);
-        // selection!.removeAllRanges();
-        // selection!.addRange(range);
-
-
-        // if (event.key === 'Tab') {
-        //     event.preventDefault();
-        // }
-        // if (event.key === 'Enter') {
-        //     // event.preventDefault();
-        //     window.document.execCommand('insertHTML', false, '\n');
-        // }
-    }
-
-    const handleKeyUp = (
-        event: React.KeyboardEvent<HTMLDivElement>,
-    ) => {
-        // const value = editor.current!.innerText;
-        // console.log(editor.current!.innerText);
-        // console.log('----');
-        // console.log(editor.current!.textContent);
-        // console.log('----');
-        // console.log(editor.current!.innerHTML);
-        // console.log('----');
-
-        // const splitValue = value
-        //     .split(/\n/);
-
-        // const editorNodes = splitValue.map(nodeText => {
-        //     const node: ChiselNode = {
-        //         type: 'paragraph',
-        //         text: nodeText,
-        //     };
-        //     return node;
-        // });
-        // const editorValue: ChiselValue = {
-        //     nodes: editorNodes,
-        // };
-
-        // atChange(
-        //     editorValue,
-        //     event,
-        // );
     }
 
     const handleClick = (
@@ -357,16 +321,6 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         setText(pieceTable.current.getSequence());
     }
 
-    // useEffect(() => {
-    //     if (nodes) {
-    //         setEditorValue({
-    //             nodes,
-    //         });
-    //     }
-    // }, [
-    //     nodes,
-    // ]);
-
     useEffect(() => {
         if (configuration) {
             if (
@@ -385,7 +339,6 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             theme={theme}
             onClick={handleClick}
             onKeyDown={handleKeyDown}
-            onKeyUp={handleKeyUp}
             onPaste={handlePaste}
             tabIndex={0}
             contentEditable={true}
@@ -397,22 +350,6 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             style={{...style}}
         >
             {text}
-            {/* {editorValue.nodes.map(node => {
-                const {
-                    text,
-                } = node;
-
-                return (
-                    <div
-                        key={Math.random() + ''}
-                        style={{
-                            margin: 0,
-                        }}
-                    >
-                        {text}
-                    </div>
-                );
-            })} */}
         </StyledChisel>
     );
 };
