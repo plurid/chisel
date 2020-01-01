@@ -372,12 +372,20 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     ]);
 
     const renderText = () => {
+        const editorFocused = editor.current === document.activeElement;
+
+        if (editorFocused) {
+            return (
+                <>
+                    {text.slice(0, cursor.current)}
+                    <StyledCaret />
+                    {text.slice(cursor.current, text.length)}
+                </>
+            );
+        }
+
         return (
-            <>
-                {text.slice(0, cursor.current)}
-                <StyledCaret />
-                {text.slice(cursor.current, text.length)}
-            </>
+            <>{text}</>
         );
     }
 
@@ -387,6 +395,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             onClick={handleClick}
             onKeyDown={handleKeyDown}
             onPaste={handlePaste}
+            onBlur={forceUpdate}
             tabIndex={0}
             contentEditable={true}
             suppressContentEditableWarning={true}
