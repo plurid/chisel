@@ -18,6 +18,7 @@ export interface ChiselValue {
 export interface ChiselProperties {
     value: ChiselValue;
     configuration?: ChiselConfiguration;
+    enhancers?: ChiselEnhancer[];
 
     style?: React.CSSProperties;
 
@@ -36,4 +37,9 @@ export interface ChiselConfiguration {
 export interface ChiselConfigurationTheme {
     general: keyof typeof themes;
     interaction: keyof typeof themes;
+}
+
+
+export interface ChiselEnhancer {
+    Component: any;
 }
