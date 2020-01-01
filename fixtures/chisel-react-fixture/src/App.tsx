@@ -8,14 +8,8 @@ import Chisel, {
 
 
 const value: ChiselValue = {
-    nodes: [
-        {
-            text: 'one',
-        },
-        {
-            text: 'two',
-        },
-    ],
+    text: '',
+    // marks: [],
 };
 
 const App = () => {

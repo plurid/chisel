@@ -18,7 +18,7 @@ import {
 import {
     ChiselProperties,
     ChiselValue,
-    ChiselNode,
+    // ChiselMark,
 } from '../../interfaces';
 
 import {
@@ -27,92 +27,9 @@ import {
 
 
 
-const createRange = (
-    node: any,
-    chars: any,
-    range?: any,
-) =>{
-    if (!range) {
-        range = document.createRange()
-        range.selectNode(node);
-        range.setStart(node, 0);
-    }
 
-    if (chars.count === 0) {
-        range.setEnd(node, chars.count);
-    } else if (node && chars.count >0) {
-        if (node.nodeType === Node.TEXT_NODE) {
-            if (node.textContent.length < chars.count) {
-                chars.count -= node.textContent.length;
-            } else {
-                 range.setEnd(node, chars.count);
-                 chars.count = 0;
-            }
-        } else {
-            for (var lp = 0; lp < node.childNodes.length; lp++) {
-                range = createRange(node.childNodes[lp], chars, range);
-
-                if (chars.count === 0) {
-                   break;
-                }
-            }
-        }
-   }
-
-   return range;
-};
-
-const setCurrentCursorPosition = (
-    chars: any,
-    element: any
-) => {
-    if (chars >= 0) {
-        const selection = window.getSelection();
-        const range = createRange(element.parentNode, { count: chars });
-
-        if (range && selection) {
-            range.collapse(false);
-            selection.removeAllRanges();
-            selection.addRange(range);
-        }
-    }
-};
-
-function getCaretPosition(el: any){
-    try {
-        var caretOffset = 0, sel;
-        if (typeof window.getSelection !== "undefined") {
-          var range = window.getSelection()!.getRangeAt(0);
-          var selected = range.toString().length;
-          var preCaretRange = range.cloneRange();
-          preCaretRange.selectNodeContents(el);
-          preCaretRange.setEnd(range.endContainer, range.endOffset);
-          caretOffset = preCaretRange.toString().length - selected;
-        }
-        return caretOffset;
-    } catch (error) {
-        return;
-    }
-}
-
-function setCaretPosition(data: any) {
-    try {
-        const selection = window.getSelection();
-        const range = document.createRange();
-        console.log(range);
-
-        range.setStart(data.node, data.position);
-        range.collapse(true);
-
-        selection?.removeAllRanges();
-        selection?.addRange(range);
-    } catch (error) {
-        return;
-    }
-}
-
-function useForceUpdate(){
-    const [value, setValue] = useState(0); // integer state
+const useForceUpdate = () => {
+    const [_, setValue] = useState(0); // integer state
     return () => setValue(value => ++value); // update the state to force render
 }
 
@@ -122,9 +39,28 @@ const getPastedText = (
     return event.clipboardData.getData('text');
 }
 
-const emptyEditorValue: ChiselValue = {
-    nodes: [],
-};
+const getCurrentWord = (
+    text: string,
+    currentCursor: number,
+) => {
+    let start = currentCursor;
+    let end = currentCursor;
+
+    while (text[start - 1] && text[start] !== ' ') {
+        start = start - 1;
+    }
+
+    while (text[end] && text[end] !== ' ') {
+        end = end + 1;
+    }
+
+    return {
+        start,
+        end,
+        length: end - start,
+    };
+}
+
 
 const Chisel: React.FC<ChiselProperties> = (properties) => {
     const editor = useRef<HTMLDivElement>(null);
@@ -134,20 +70,20 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     const forceUpdate = useForceUpdate();
 
     const {
-        // value,
+        value,
         atChange,
         configuration,
-        enhancers,
+        // enhancers,
         style,
     } = properties;
 
-    // const {
-    //     nodes,
-    // } = value;
+    const {
+        text: initialText,
+        // marks,
+    } = value;
 
     const [text, setText] = useState('');
 
-    // const [editorValue, setEditorValue] = useState<ChiselValue>({...emptyEditorValue});
     const [theme, seTheme] = useState(themes.plurid);
 
 
@@ -205,31 +141,11 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         return false;
     }
 
-    const alterCursorAndSetText = (cursorStep: number) => {
+    const alterCursorAndSetText = (
+        cursorStep: number,
+    ) => {
         cursor.current += cursorStep;
         setText(pieceTable.current.getSequence());
-    }
-
-    const getCurrentWord = (
-        text: string,
-        currentCursor: number,
-    ) => {
-        let start = currentCursor;
-        let end = currentCursor;
-
-        while (text[start - 1] && text[start] !== ' ') {
-            start = start - 1;
-        }
-
-        while (text[end] && text[end] !== ' ') {
-            end = end + 1;
-        }
-
-        return {
-            start,
-            end,
-            length: end - start,
-        };
     }
 
     const handleKeyDown = (
@@ -243,40 +159,9 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
 
         const printableKey = event.key.length === 1;
         if (printableKey) {
+            // console.log(cursor.current);
             pieceTable.current.insert(event.key, cursor.current);
-            console.log(cursor.current);
             alterCursorAndSetText(1);
-
-            // if (editor.current) {
-            //     console.log(editor.current.childNodes[0]);
-            //     if (editor.current.childNodes[0]) {
-            //         setCaretPosition(
-            //             {
-            //                 node: editor.current.childNodes[0],
-            //                 position: cursor.current,
-            //             }
-            //         );
-            //         // editor.current.childNodes[0].focus();
-            //     }
-            // }
-
-            // editor.current?.focus();
-            // setCurrentCursorPosition(cursor.current, editor.current);
-            // if (editor.current && editor.current.childNodes) {
-            //     const range = document.createRange();
-            //     console.log(range);
-            //     console.log(editor.current.childNodes);
-            //     const textNode = editor.current.childNodes[0];
-            //     console.log(textNode);
-            //     // range.setStart(editor.current?.childNodes[0], 1);
-            //     // range.collapse();
-            // }
-
-            // const selObj = window.getSelection();
-            // console.log(selObj);
-            // const selRange = selObj?.getRangeAt(0);
-            // selRange?.collapse();
-            // console.log(selRange);
         }
 
         if (event.key === 'Backspace' && !event.shiftKey) {
@@ -326,6 +211,10 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             }
         }
 
+        if (event.key === 'Tab') {
+            pieceTable.current.insert('    ', cursor.current);
+            alterCursorAndSetText(4);
+        }
 
         if (event.key === 'Enter') {
             pieceTable.current.insert('\n', cursor.current);
@@ -334,16 +223,31 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         }
     }
 
+    const handleKeyUp = (
+        event: React.KeyboardEvent<HTMLDivElement>,
+    ) => {
+        const text = pieceTable.current.getSequence();
+        const value: ChiselValue = {
+            text,
+            marks: [],
+        };
+        atChange(value, event);
+    }
+
     const handleClick = (
         event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     ) => {
         const selection = getSelectionCaretAndLine(editor.current);
-        // const sel = getCaretPosition(editor.current);
-        // console.log('aaa', sel);
 
         if (selection) {
-            cursor.current = selection.caret;
-            console.log('selection', selection);
+            // console.log('selection', selection);
+            const text = pieceTable.current.getSequence();
+
+            if (text[selection.caret]) {
+                cursor.current = selection.caret;
+            } else {
+                cursor.current = text.length;
+            }
             forceUpdate();
         }
     }
@@ -359,6 +263,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         setText(pieceTable.current.getSequence());
     }
 
+    /** Handle Configuration */
     useEffect(() => {
         if (configuration) {
             if (
@@ -370,6 +275,16 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         }
     }, [
         configuration,
+    ]);
+
+    /** Handle Initial Text */
+    useEffect(() => {
+        if (initialText) {
+            pieceTable.current.insert(initialText, cursor.current);
+            setText(pieceTable.current.getSequence());
+        }
+    }, [
+        initialText,
     ]);
 
     const renderText = () => {
@@ -395,6 +310,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             theme={theme}
             onClick={handleClick}
             onKeyDown={handleKeyDown}
+            onKeyUp={handleKeyUp}
             onPaste={handlePaste}
             onBlur={forceUpdate}
             tabIndex={0}
