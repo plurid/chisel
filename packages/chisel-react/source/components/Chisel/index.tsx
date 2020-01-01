@@ -111,6 +111,10 @@ function setCaretPosition(data: any) {
     }
 }
 
+function useForceUpdate(){
+    const [value, setValue] = useState(0); // integer state
+    return () => setValue(value => ++value); // update the state to force render
+}
 
 const getPastedText = (
     event: React.ClipboardEvent<HTMLDivElement>,
@@ -126,6 +130,8 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     const editor = useRef<HTMLDivElement>(null);
     const pieceTable = useRef(new PieceTable(''));
     const cursor = useRef(0);
+
+    const forceUpdate = useForceUpdate();
 
     const {
         // value,
@@ -304,8 +310,9 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         if (event.key === 'ArrowLeft') {
             const text = pieceTable.current.getSequence();
 
-            if (text[cursor.current]) {
+            if (text[cursor.current - 1]) {
                 cursor.current -= 1;
+                forceUpdate();
             }
         }
 
@@ -314,6 +321,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
 
             if (text[cursor.current]) {
                 cursor.current += 1;
+                forceUpdate();
             }
         }
 
@@ -335,7 +343,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         if (selection) {
             cursor.current = selection.caret;
             console.log('selection', selection);
-            setText(pieceTable.current.getSequence() + '');
+            forceUpdate();
         }
     }
 
