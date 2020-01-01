@@ -1,16 +1,21 @@
-import FormatBar from './FormatBar';
-
 import {
-    ChiselEnhancer
-} from '../../interfaces';
+    ChiselEnhancerFormatBar,
+} from './enhancers';
 
 
 
-const ChiselEnhancerFormatBar: ChiselEnhancer = {
-    Component: FormatBar,
-};
+const StandardChiselEnhancers = [
+    ChiselEnhancerFormatBar,
+];
+
+const AdvancedChiselEnhancers = [
+    ChiselEnhancerFormatBar,
+];
 
 
 export {
     ChiselEnhancerFormatBar,
+
+    StandardChiselEnhancers,
+    AdvancedChiselEnhancers,
 }
