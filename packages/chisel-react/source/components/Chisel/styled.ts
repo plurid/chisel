@@ -14,4 +14,20 @@ export const StyledChisel = styled.div`
     font-size: 0.9rem;
     white-space: pre-wrap;
     word-break: break-word;
+    caret-color: transparent;
+`;
+
+export const StyledCaret = styled.span`
+    display: inline-block;
+    position: relative;
+
+    ::after {
+        content: '';
+        position: absolute;
+        top: -15px;
+        left: 2px;
+        height: 20px;
+        width: 1px;
+        background-color: white;
+    }
 `;

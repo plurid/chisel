@@ -12,6 +12,7 @@ import themes from '@plurid/plurid-themes';
 
 import {
     StyledChisel,
+    StyledCaret,
 } from './styled';
 
 import {
@@ -334,6 +335,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         if (selection) {
             cursor.current = selection.caret;
             console.log('selection', selection);
+            setText(pieceTable.current.getSequence() + '');
         }
     }
 
@@ -361,6 +363,16 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         configuration,
     ]);
 
+    const renderText = () => {
+        return (
+            <>
+                {text.slice(0, cursor.current)}
+                <StyledCaret />
+                {text.slice(cursor.current, text.length)}
+            </>
+        );
+    }
+
     return (
         <StyledChisel
             theme={theme}
@@ -376,7 +388,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             ref={editor}
             style={{...style}}
         >
-            {text}
+            {renderText()}
         </StyledChisel>
     );
 };
