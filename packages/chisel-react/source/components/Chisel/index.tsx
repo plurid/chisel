@@ -28,6 +28,13 @@ import {
 
 
 
+export interface TextLine {
+    index: number;
+    start: number;
+    text: string;
+}
+
+
 const useForceUpdate = () => {
     const [_, setValue] = useState(0); // integer state
     return () => setValue(value => ++value); // update the state to force render
@@ -59,6 +66,113 @@ const getCurrentWord = (
         end,
         length: end - start,
     };
+}
+
+
+const computeLines = (
+    text: string,
+): TextLine[] => {
+    const lines = text.split('\n');
+    const textLines: TextLine[] = [];
+    let count = 0;
+
+    for (const [index, line] of lines.entries()) {
+        const textLine: TextLine = {
+            index,
+            start: count,
+            text: line,
+        };
+        textLines.push(textLine);
+        count += line.length;
+    }
+
+    return textLines;
+}
+
+const getCurrentLine = (
+    text: string,
+    cursor: number,
+) => {
+    const textLines = computeLines(text);
+    let count = 0;
+
+    // console.log('cursor', cursor);
+
+    for (const [index, line] of textLines.entries()) {
+        // console.log(index, line);
+        // console.log('-----');
+        const chars = line.text.length + count;
+        // console.log('chars', chars);
+        if (chars + 1 >= cursor) {
+            return {
+                index,
+                line,
+                lines: textLines,
+            };
+        }
+        count += line.text.length;
+    }
+
+    return;
+}
+
+const moveCursorRow = (
+    text: string,
+    cursor: number,
+    type: 'up' | 'down',
+): number => {
+    console.log(text);
+    const currentLine = getCurrentLine(text, cursor);
+    if (!currentLine) {
+        return cursor;
+    }
+    console.log(currentLine);
+    console.log(currentLine.line);
+
+    const {
+        index,
+        line,
+        lines,
+    } = currentLine;
+
+    switch (type) {
+        case 'up':
+            {
+                if (lines.length === 1) {
+                    return cursor - 1;
+                }
+
+                const previousLine = lines[line.index - 1];
+                if (!previousLine) {
+                    return line.start;
+                }
+
+                const updatedCursor = previousLine.start + (cursor - line.start) - 1;
+                if (!previousLine.text[updatedCursor - previousLine.start]) {
+                    return previousLine.start + previousLine.text.length;
+                }
+
+                return updatedCursor;
+            }
+        case 'down':
+            {
+                if (lines.length === 1) {
+                    return cursor + 1;
+                }
+
+                const nextLine = lines[line.index + 1];
+                if (!nextLine) {
+                    return line.start + line.text.length;
+                }
+
+                const updatedCursor = nextLine.start + (cursor - line.start) + 1;
+                if (!nextLine.text[updatedCursor - nextLine.start]) {
+                    return nextLine.start + nextLine.text.length;
+                }
+
+                return updatedCursor;
+            }
+    }
 }
 
 
@@ -145,7 +259,9 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     const alterCursorAndSetText = (
         cursorStep: number,
     ) => {
+        // console.log('cursor prev', cursor.current);
         cursor.current += cursorStep;
+        // console.log('cursor now', cursor.current);
         setText(pieceTable.current.getSequence());
     }
 
@@ -214,20 +330,16 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
 
         if (event.key === 'ArrowUp') {
             const text = pieceTable.current.getSequence();
-
-            if (text[cursor.current - 1]) {
-                cursor.current -= 1;
-                forceUpdate();
-            }
+            const updatedCursor = moveCursorRow(text, cursor.current, 'up');
+            cursor.current = updatedCursor;
+            forceUpdate();
         }
 
         if (event.key === 'ArrowDown') {
             const text = pieceTable.current.getSequence();
-
-            if (text[cursor.current]) {
-                cursor.current += 1;
-                forceUpdate();
-            }
+            const updatedCursor = moveCursorRow(text, cursor.current, 'down');
+            cursor.current = updatedCursor;
+            forceUpdate();
         }
 
         if (event.key === 'Tab') {
