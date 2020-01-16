@@ -1,3 +1,4 @@
+export * from './cursors';
 export * from './lines';
 export * from './navigation';
 export * from './pasting';

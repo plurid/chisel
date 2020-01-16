@@ -22,6 +22,9 @@ import {
 } from '../../interfaces';
 
 import {
+    updateCursors,
+    setSingleCursor,
+
     getSelectionCaretAndLine,
     getPastedText,
     getCurrentWord,
@@ -424,6 +427,10 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             } else {
                 cursor.current = text.length;
             }
+
+            const cursors = setSingleCursor(selection.caret);
+            internalCursors.current = cursors;
+
             forceUpdate();
         }
 
@@ -515,6 +522,8 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         );
     }
 
+
+    console.log(internalCursors.current);
 
     return (
         <StyledChisel
