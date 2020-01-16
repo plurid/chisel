@@ -413,6 +413,97 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         atChange(value, event);
     }
 
+    const handleMouseUp = (
+        e: any,
+    ) => {
+        e.preventDefault();
+        const selectionObj = (window.getSelection && window.getSelection());
+        if (!selectionObj) {
+            return;
+        }
+
+        const selection = selectionObj.toString();
+
+        const anchorNode = selectionObj.anchorNode;
+        if (!anchorNode) {
+            return;
+        }
+
+        const focusNode = selectionObj.focusNode;
+        if (!focusNode) {
+            return;
+        }
+
+        const anchorOffset = selectionObj.anchorOffset;
+        const focusOffset = selectionObj.focusOffset;
+
+        const position = anchorNode.compareDocumentPosition(focusNode);
+        let forward = false;
+
+        if (position === anchorNode.DOCUMENT_POSITION_FOLLOWING) {
+            forward = true;
+        } else if (position === 0) {
+            forward = (focusOffset - anchorOffset) > 0;
+        }
+
+        let selectionStart = forward ? anchorOffset : focusOffset;
+
+        // if (forward) {
+        //     if (anchorNode.parentNode.getAttribute('data-order')
+        //         && anchorNode.parentNode.getAttribute('data-order') === 'middle') {
+        //         selectionStart += this.state.selectionStart;
+        //     }
+        //     if (anchorNode.parentNode.getAttribute('data-order')
+        //         && anchorNode.parentNode.getAttribute('data-order') === 'last') {
+        //         selectionStart += this.state.selectionEnd;
+        //     }
+        // } else {
+        //     if (focusNode.parentNode.getAttribute('data-order')
+        //         && focusNode.parentNode.getAttribute('data-order') === 'middle') {
+        //         selectionStart += this.state.selectionStart;
+        //     }
+        //     if (focusNode.parentNode.getAttribute('data-order')
+        //         && focusNode.parentNode.getAttribute('data-order') === 'last') {
+        //         selectionStart += this.state.selectionEnd;
+        //     }
+        // }
+
+        const selectionEnd = selectionStart + selection.length;
+
+        if (selectionStart === selectionEnd) {
+            cursor.current = selectionStart;
+            const cursors = setSingleCursor(selectionStart);
+            internalCursors.current = cursors;
+        }
+
+        console.log(selectionStart, selectionEnd);
+
+        forceUpdate();
+
+        // const first = this.state.text.slice(0, selectionStart);
+        // const middle = this.state.text.slice(selectionStart, selectionEnd);
+        // const last = this.state.text.slice(selectionEnd);
+
+        // this.setState({
+        //     selection,
+        //     anchorNode,
+        //     focusNode,
+        //     selectionStart,
+        //     selectionEnd,
+        //     first,
+        //     middle,
+        //     last
+        // });
+
+        // if (this.props.selectionHandler) {
+        //     this.props.selectionHandler({
+        //         selection,
+        //         selectionStart,
+        //         selectionEnd
+        //     });
+        // }
+    }
+
     const handleClick = (
         event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     ) => {
@@ -528,7 +619,8 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     return (
         <StyledChisel
             theme={theme}
-            onClick={handleClick}
+            // onClick={handleClick}
+            onMouseUp={handleMouseUp}
             onKeyDown={handleKeyDown}
             onKeyUp={handleKeyUp}
             onPaste={handlePaste}
