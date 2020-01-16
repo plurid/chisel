@@ -42,16 +42,30 @@ export const getCurrentLine = (
     for (const [index, line] of textLines.entries()) {
         // console.log(index, line);
         // console.log('-----');
-        const chars = line.text.length + count;
+        const chars = line.text.length === 0
+            ? 1 + count
+            : line.text.length + count;
+
         // console.log('chars', chars);
-        if (chars + 1 >= cursor) {
+        // console.log('line.text.length', line.text.length);
+        if (chars >= cursor) {
             return {
                 index,
                 line,
                 lines: textLines,
             };
         }
-        count += line.text.length;
+        count += line.text.length == 0
+            ? 1
+            : line.text.length;
+    }
+
+    if (cursor > count) {
+        return {
+            index: textLines[textLines.length - 1].index,
+            line: textLines[textLines.length - 1],
+            lines: textLines,
+        };
     }
 
     return;
