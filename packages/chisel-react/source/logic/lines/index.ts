@@ -22,7 +22,7 @@ export const computeLines = (
         if (line.length === 0) {
             count += 1;
         } else {
-            count += line.length;
+            count += line.length + 1;
         }
     }
 
@@ -38,6 +38,7 @@ export const getCurrentLine = (
     let count = 0;
 
     // console.log('cursor', cursor);
+    // console.log('textLines', textLines);
 
     for (const [index, line] of textLines.entries()) {
         // console.log(index, line);
@@ -57,7 +58,7 @@ export const getCurrentLine = (
         }
         count += line.text.length == 0
             ? 1
-            : line.text.length;
+            : line.text.length + 1;
     }
 
     if (cursor > count) {
