@@ -33,24 +33,36 @@ import {
     useForceUpdate,
 } from '../../utilities/hooks';
 
+import {
+    InternalCursor,
+    ExternalCursor,
+} from '../../interfaces/internal';
+
 
 
 const Chisel: React.FC<ChiselProperties> = (properties) => {
     const editor = useRef<HTMLDivElement>(null);
     const pieceTable = useRef(new PieceTable(''));
-    // TODO
-    // allow multiple cursors
+
+    const externalCursorsRef = useRef<ExternalCursor[]>([]);
+    const internalCursors = useRef<InternalCursor[]>([]);
     const cursor = useRef(0);
+
     const lines = useRef(1);
 
     const forceUpdate = useForceUpdate();
 
     const {
         value,
-        atChange,
+
         configuration,
-        // enhancers,
+        externalCursors,
+        enhancers,
+
+        atChange,
+
         style,
+        className,
     } = properties;
 
     const {
@@ -120,9 +132,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     const alterCursorAndSetText = (
         cursorStep: number,
     ) => {
-        // console.log('cursor prev', cursor.current);
         cursor.current += cursorStep;
-        // console.log('cursor now', cursor.current);
         setText(pieceTable.current.getSequence());
     }
 
@@ -416,6 +426,13 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             }
             forceUpdate();
         }
+
+        /**
+         * Adds cursor at location.
+         */
+        if (event.altKey) {
+            // TODO
+        }
     }
 
     const handlePaste = (
@@ -428,6 +445,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         cursor.current += pastedTextLength;
         setText(pieceTable.current.getSequence());
     }
+
 
     /** Handle Configuration */
     useEffect(() => {
@@ -463,6 +481,22 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         text,
     ]);
 
+    /** Handle External Cursors */
+    useEffect(() => {
+        if (externalCursors) {
+            externalCursorsRef.current = externalCursors;
+        }
+    }, [
+        externalCursors,
+    ]);
+
+    /** Handle Enhancers */
+    useEffect(() => {
+    }, [
+        enhancers,
+    ]);
+
+
     const renderText = () => {
         const editorFocused = editor.current === document.activeElement;
 
@@ -481,6 +515,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         );
     }
 
+
     return (
         <StyledChisel
             theme={theme}
@@ -497,9 +532,9 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             spellCheck={false}
             ref={editor}
             style={{
-                // height: 40 + lines.current * 16 + 'px',
                 ...style,
             }}
+            className={className}
         >
             {renderText()}
         </StyledChisel>
