@@ -9,13 +9,13 @@ export const moveCursorRow = (
     cursor: number,
     type: 'up' | 'down',
 ): number => {
-    console.log(text);
+    // console.log(text);
     const currentLine = getCurrentLine(text, cursor);
     if (!currentLine) {
         return cursor;
     }
-    console.log(currentLine);
-    console.log(currentLine.line);
+    // console.log(currentLine);
+    // console.log(currentLine.line);
 
     const {
         index,
@@ -27,7 +27,7 @@ export const moveCursorRow = (
         case 'up':
             {
                 if (lines.length === 1) {
-                    return cursor - 1;
+                    return 0;
                 }
 
                 const previousLine = lines[line.index - 1];
@@ -45,15 +45,17 @@ export const moveCursorRow = (
         case 'down':
             {
                 if (lines.length === 1) {
-                    return cursor + 1;
+                    return line.text.length;
                 }
 
                 const nextLine = lines[line.index + 1];
+                console.log('nextLine', nextLine);
                 if (!nextLine) {
                     return line.start + line.text.length;
                 }
 
                 const updatedCursor = nextLine.start + (cursor - line.start) + 1;
+                console.log('updatedCursor', updatedCursor);
                 if (!nextLine.text[updatedCursor - nextLine.start]) {
                     return nextLine.start + nextLine.text.length;
                 }
