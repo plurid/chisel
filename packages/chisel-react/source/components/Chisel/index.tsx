@@ -146,7 +146,6 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         cursorStep: number,
     ) => {
         cursor.current += cursorStep;
-        // console.log('cursor.current !', cursor.current);
         setText(pieceTable.current.getSequence());
     }
 
@@ -160,7 +159,6 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         event.preventDefault();
 
         const currentLine = getCurrentLine(text, cursor.current);
-        // console.log('currentLine', currentLine);
         if (!currentLine) {
             return;
         }
@@ -173,7 +171,6 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
 
         const printableKey = event.key.length === 1;
         if (printableKey) {
-            // console.log(cursor.current);
             pieceTable.current.insert(event.key, cursor.current);
             alterCursorAndSetText(1);
             return;
@@ -247,11 +244,6 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
 
                 if (text[cursor.current - 1]) {
                     cursor.current -= 1;
-                    // console.log('cursor.current', cursor.current);
-
-                    // const currentLine = getCurrentLine(text, cursor.current);
-                    // console.log('currentLine! !!', currentLine);
-
                     forceUpdate();
                 }
             }
@@ -294,11 +286,6 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
 
                 if (text[cursor.current]) {
                     cursor.current += 1;
-                    // console.log('cursor.current', cursor.current);
-
-                    // const currentLine = getCurrentLine(text, cursor.current);
-                    // console.log('currentLine !!!', currentLine);
-
                     forceUpdate();
                 }
             }
