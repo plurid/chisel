@@ -159,7 +159,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         event.preventDefault();
 
         const currentLine = getCurrentLine(text, cursor.current);
-        console.log('currentLine', currentLine);
+        // console.log('currentLine', currentLine);
         if (!currentLine) {
             return;
         }
@@ -425,9 +425,9 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     }
 
     const handleMouseUp = (
-        e: any,
+        event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     ) => {
-        e.preventDefault();
+        event.preventDefault();
         const selectionObj = (window.getSelection && window.getSelection());
         if (!selectionObj) {
             return;
@@ -487,7 +487,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             internalCursors.current = cursors;
         }
 
-        console.log(selectionStart, selectionEnd);
+        // console.log(selectionStart, selectionEnd);
 
         forceUpdate();
 
@@ -629,7 +629,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     }
 
 
-    console.log(internalCursors.current);
+    // console.log(internalCursors.current);
 
     return (
         <StyledChisel

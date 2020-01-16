@@ -16,7 +16,7 @@ const App = () => {
     const atChange = (
         value: ChiselValue,
     ) => {
-        console.log('value', value);
+        // console.log('value', value);
     }
 
     return (
