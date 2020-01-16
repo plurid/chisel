@@ -37,18 +37,11 @@ export const getCurrentLine = (
     const textLines = computeLines(text);
     let count = 0;
 
-    // console.log('cursor', cursor);
-    // console.log('textLines', textLines);
-
     for (const [index, line] of textLines.entries()) {
-        // console.log(index, line);
-        // console.log('-----');
         const chars = line.text.length === 0
             ? 1 + count
             : line.text.length + count;
 
-        // console.log('chars', chars);
-        // console.log('line.text.length', line.text.length);
         if (chars >= cursor) {
             return {
                 index,
