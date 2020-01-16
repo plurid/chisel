@@ -11,3 +11,10 @@ export interface InternalCursor extends Cursor {
 export interface ExternalCursor extends Cursor {
     owner: string;
 }
+
+
+export interface TextLine {
+    index: number;
+    start: number;
+    text: string;
+}

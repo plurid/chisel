@@ -1,8 +1,6 @@
-export interface TextLine {
-    index: number;
-    start: number;
-    text: string;
-}
+import {
+    TextLine
+} from '../../interfaces/internal';
 
 
 
@@ -20,7 +18,12 @@ export const computeLines = (
             text: line,
         };
         textLines.push(textLine);
-        count += line.length;
+
+        if (line.length === 0) {
+            count += 1;
+        } else {
+            count += line.length;
+        }
     }
 
     return textLines;
