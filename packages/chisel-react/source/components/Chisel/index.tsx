@@ -53,6 +53,9 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
 
     const lines = useRef(1);
 
+    const [selectionStart, setSelectionStart] = useState<number | undefined>(undefined);
+    const [selectionEnd, setSelectionEnd] = useState<number | undefined>(undefined);
+
     const forceUpdate = useForceUpdate();
 
     const {
@@ -184,6 +187,14 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
                 pieceTable.current.delete(cursor.current - 1, 1);
 
                 alterCursorAndSetText(-1);
+            }
+
+            if (selectionStart && selectionEnd) {
+                pieceTable.current.delete(selectionStart, (selectionEnd - selectionStart));
+                alterCursorAndSetText(selectionStart);
+
+                setSelectionStart(undefined);
+                setSelectionEnd(undefined);
             }
         }
 
@@ -483,9 +494,15 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             cursor.current = selectionStart;
             const cursors = setSingleCursor(selectionStart);
             internalCursors.current = cursors;
+
+            setSelectionStart(undefined);
+            setSelectionEnd(undefined);
+        } else {
+            setSelectionStart(selectionStart);
+            setSelectionEnd(selectionEnd);
         }
 
-        // console.log(selectionStart, selectionEnd);
+        console.log(selectionStart, selectionEnd);
 
         forceUpdate();
 
@@ -611,7 +628,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         //     console.log('index, character', index, character);
         // }
 
-        if (editorFocused) {
+        if (editorFocused && !selectionStart) {
             return (
                 <>
                     {text.slice(0, cursor.current)}
