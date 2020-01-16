@@ -2,6 +2,10 @@ import React from 'react';
 
 import themes from '@plurid/plurid-themes';
 
+import {
+    ExternalCursor,
+} from './internal';
+
 
 
 export interface ChiselValue {
@@ -19,10 +23,13 @@ export interface ChiselMark {
 
 export interface ChiselProperties {
     value: ChiselValue;
+
     configuration?: ChiselConfiguration;
     enhancers?: ChiselEnhancer[];
+    externalCursors?: ExternalCursor[];
 
     style?: React.CSSProperties;
+    className?: string;
 
     atChange(
         value: ChiselValue,
