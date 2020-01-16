@@ -621,21 +621,52 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     ]);
 
 
+    const parser = () => {
+
+    }
+
     const renderText = () => {
         const editorFocused = editor.current === document.activeElement;
 
-        // for (const [index, character] of text.split('').entries()) {
-        //     console.log('index, character', index, character);
-        // }
+        const p = [];
+        for (const [index, character] of text.split('').entries()) {
+            if (index === 0 && cursor.current === 0) {
+                p.push((
+                    <StyledCaret
+                        key={'c' + Math.random()}
+                    />
+                ));
+            }
+
+            p.push(character);
+
+            if (index + 1 === cursor.current)  {
+                p.push((
+                    <StyledCaret
+                        key={'c' + Math.random()}
+                    />
+                ));
+            }
+            console.log('index, character', index, character);
+        }
+        console.log(p);
 
         if (editorFocused && !selectionStart) {
             return (
                 <>
-                    {text.slice(0, cursor.current)}
-                    <StyledCaret />
-                    {text.slice(cursor.current, text.length)}
+                    {p}
                 </>
             );
+
+            // return (
+            //     <>
+            //     <b>
+            //         {text.slice(0, cursor.current)}
+            //         <StyledCaret />
+            //         {text.slice(cursor.current, text.length)}
+            //     </b>
+            //     </>
+            // );
         }
 
         return (
