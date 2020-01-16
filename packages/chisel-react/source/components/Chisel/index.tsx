@@ -26,6 +26,7 @@ import {
     getPastedText,
     getCurrentWord,
     moveCursorRow,
+    getCurrentLine,
 } from '../../logic';
 
 import {
@@ -37,6 +38,8 @@ import {
 const Chisel: React.FC<ChiselProperties> = (properties) => {
     const editor = useRef<HTMLDivElement>(null);
     const pieceTable = useRef(new PieceTable(''));
+    // TODO
+    // allow multiple cursors
     const cursor = useRef(0);
     const lines = useRef(1);
 
@@ -132,6 +135,11 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
 
         event.preventDefault();
 
+        const currentLine = getCurrentLine(text, cursor.current);
+        if (!currentLine) {
+            return;
+        }
+
         const noModifiers = !event.shiftKey
             && !event.altKey
             && !event.ctrlKey
@@ -143,9 +151,13 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             // console.log(cursor.current);
             pieceTable.current.insert(event.key, cursor.current);
             alterCursorAndSetText(1);
+            return;
         }
 
-        if (event.key === 'Backspace' && !event.shiftKey) {
+        if (event.key === 'Backspace'
+            && !event.altKey
+            && !(event.ctrlKey || event.metaKey)
+        ) {
             if (cursor.current > 0) {
                 pieceTable.current.delete(cursor.current - 1, 1);
 
@@ -153,13 +165,40 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
             }
         }
 
-        if (event.key === 'Backspace' && event.shiftKey) {
+        /**
+         * Remove until the start of word.
+         */
+        if (event.key === 'Backspace'
+            && event.altKey
+            && !(event.ctrlKey || event.metaKey)
+        ) {
             if (cursor.current > 0) {
                 const currentWord = getCurrentWord(pieceTable.current.getSequence(), cursor.current);
 
-                pieceTable.current.delete(currentWord.start, currentWord.length);
+                pieceTable.current.delete(
+                    currentWord.start,
+                    cursor.current - currentWord.start,
+                );
 
                 cursor.current = currentWord.start;
+                setText(pieceTable.current.getSequence());
+            }
+        }
+
+        /**
+         * Remove until the start of line.
+         */
+        if (event.key === 'Backspace'
+            && (event.ctrlKey || event.metaKey)
+            && !event.altKey
+        ) {
+            if (cursor.current > 0) {
+                const {
+                    line,
+                } = currentLine;
+                pieceTable.current.delete(line.start, cursor.current);
+
+                cursor.current = line.start;
                 setText(pieceTable.current.getSequence());
             }
         }
