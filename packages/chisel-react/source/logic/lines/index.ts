@@ -35,32 +35,21 @@ export const getCurrentLine = (
     cursor: number,
 ) => {
     const textLines = computeLines(text);
-    let count = 0;
 
     for (const [index, line] of textLines.entries()) {
-        const chars = line.text.length === 0
-            ? 1 + count
-            : line.text.length + count;
-
-        if (chars >= cursor) {
+        const lineTotal = line.start + line.text.length;
+        if (line.start <= cursor && cursor <= lineTotal) {
             return {
                 index,
                 line,
                 lines: textLines,
             };
         }
-        count += line.text.length == 0
-            ? 1
-            : line.text.length + 1;
     }
 
-    if (cursor > count) {
-        return {
-            index: textLines[textLines.length - 1].index,
-            line: textLines[textLines.length - 1],
-            lines: textLines,
-        };
-    }
-
-    return;
+    return {
+        index: textLines[textLines.length - 1].index,
+        line: textLines[textLines.length - 1],
+        lines: textLines,
+    };
 }
