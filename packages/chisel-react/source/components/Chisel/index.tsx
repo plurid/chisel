@@ -149,6 +149,7 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         event.preventDefault();
 
         const currentLine = getCurrentLine(text, cursor.current);
+        console.log('currentLine', currentLine);
         if (!currentLine) {
             return;
         }
@@ -597,6 +598,10 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
 
     const renderText = () => {
         const editorFocused = editor.current === document.activeElement;
+
+        // for (const [index, character] of text.split('').entries()) {
+        //     console.log('index, character', index, character);
+        // }
 
         if (editorFocused) {
             return (
