@@ -9,8 +9,8 @@ export const StyledChisel = styled.div`
     width: 100%;
     height: 100%;
     padding: 20px;
-    font-size: 16px;
-    line-height: 16px;
+    font-size: 17px;
+    line-height: 25px;
     outline: none;
     font-family: 'Ubuntu', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     white-space: pre-wrap;

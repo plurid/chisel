@@ -34,6 +34,11 @@ const App = () => {
                         ChiselEnhancerFormatBar,
                     ]
                 }
+                style={
+                    {
+                        fontFamily: '"Menlo", monospace',
+                    }
+                }
             />
         </div>
     );
