@@ -23,157 +23,15 @@ import {
 
 import {
     getSelectionCaretAndLine,
-} from '../../utilities';
+    getPastedText,
+    getCurrentWord,
+    moveCursorRow,
+} from '../../logic';
 
+import {
+    useForceUpdate,
+} from '../../utilities/hooks';
 
-
-
-export interface TextLine {
-    index: number;
-    start: number;
-    text: string;
-}
-
-
-const useForceUpdate = () => {
-    const [_, setValue] = useState(0); // integer state
-    return () => setValue(value => ++value); // update the state to force render
-}
-
-const getPastedText = (
-    event: React.ClipboardEvent<HTMLDivElement>,
-) => {
-    return event.clipboardData.getData('text');
-}
-
-const getCurrentWord = (
-    text: string,
-    currentCursor: number,
-) => {
-    let start = currentCursor;
-    let end = currentCursor;
-
-    while (text[start - 1] && text[start] !== ' ') {
-        start = start - 1;
-    }
-
-    while (text[end] && text[end] !== ' ') {
-        end = end + 1;
-    }
-
-    return {
-        start,
-        end,
-        length: end - start,
-    };
-}
-
-
-const computeLines = (
-    text: string,
-): TextLine[] => {
-    const lines = text.split('\n');
-    const textLines: TextLine[] = [];
-    let count = 0;
-
-    for (const [index, line] of lines.entries()) {
-        const textLine: TextLine = {
-            index,
-            start: count,
-            text: line,
-        };
-        textLines.push(textLine);
-        count += line.length;
-    }
-
-    return textLines;
-}
-
-const getCurrentLine = (
-    text: string,
-    cursor: number,
-) => {
-    const textLines = computeLines(text);
-    let count = 0;
-
-    // console.log('cursor', cursor);
-
-    for (const [index, line] of textLines.entries()) {
-        // console.log(index, line);
-        // console.log('-----');
-        const chars = line.text.length + count;
-        // console.log('chars', chars);
-        if (chars + 1 >= cursor) {
-            return {
-                index,
-                line,
-                lines: textLines,
-            };
-        }
-        count += line.text.length;
-    }
-
-    return;
-}
-
-const moveCursorRow = (
-    text: string,
-    cursor: number,
-    type: 'up' | 'down',
-): number => {
-    console.log(text);
-    const currentLine = getCurrentLine(text, cursor);
-    if (!currentLine) {
-        return cursor;
-    }
-    console.log(currentLine);
-    console.log(currentLine.line);
-
-    const {
-        index,
-        line,
-        lines,
-    } = currentLine;
-
-    switch (type) {
-        case 'up':
-            {
-                if (lines.length === 1) {
-                    return cursor - 1;
-                }
-
-                const previousLine = lines[line.index - 1];
-                if (!previousLine) {
-                    return line.start;
-                }
-
-                const updatedCursor = previousLine.start + (cursor - line.start) - 1;
-                if (!previousLine.text[updatedCursor - previousLine.start]) {
-                    return previousLine.start + previousLine.text.length;
-                }
-
-                return updatedCursor;
-            }
-        case 'down':
-            {
-                if (lines.length === 1) {
-                    return cursor + 1;
-                }
-
-                const nextLine = lines[line.index + 1];
-                if (!nextLine) {
-                    return line.start + line.text.length;
-                }
-
-                const updatedCursor = nextLine.start + (cursor - line.start) + 1;
-                if (!nextLine.text[updatedCursor - nextLine.start]) {
-                    return nextLine.start + nextLine.text.length;
-                }
-
-                return updatedCursor;
-            }
-    }
-}
 
 
 const Chisel: React.FC<ChiselProperties> = (properties) => {
@@ -274,6 +132,12 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
 
         event.preventDefault();
 
+        const noModifiers = !event.shiftKey
+            && !event.altKey
+            && !event.ctrlKey
+            && !event.metaKey;
+        const selecting = event.shiftKey;
+
         const printableKey = event.key.length === 1;
         if (printableKey) {
             // console.log(cursor.current);
@@ -311,35 +175,167 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
         }
 
         if (event.key === 'ArrowLeft') {
-            const text = pieceTable.current.getSequence();
+            /**
+             * Simple navigation
+             */
+            if (noModifiers) {
+                const text = pieceTable.current.getSequence();
 
-            if (text[cursor.current - 1]) {
-                cursor.current -= 1;
-                forceUpdate();
+                if (text[cursor.current - 1]) {
+                    cursor.current -= 1;
+                    forceUpdate();
+                }
+            }
+
+            /**
+             * Navigation with jump to start of line
+             */
+            if (event.metaKey || event.ctrlKey) {
+                // TODO
+
+                /**
+                 * Navigation while selecting
+                 */
+                if (selecting) {
+                    // TODO
+                }
+            }
+
+            /**
+             * Navigation with jump to start of word
+             */
+            if (event.altKey) {
+                // TODO
+
+                /**
+                 * Navigation while selecting
+                 */
+                if (selecting) {
+                    // TODO
+                }
             }
         }
 
         if (event.key === 'ArrowRight') {
-            const text = pieceTable.current.getSequence();
+            /**
+             * Simple navigation
+             */
+            if (noModifiers) {
+                const text = pieceTable.current.getSequence();
 
-            if (text[cursor.current]) {
-                cursor.current += 1;
-                forceUpdate();
+                if (text[cursor.current]) {
+                    cursor.current += 1;
+                    forceUpdate();
+                }
+            }
+
+            /**
+             * Navigation with jump to end of line
+             */
+            if (event.metaKey || event.ctrlKey) {
+                // TODO
+
+                /**
+                 * Navigation while selecting
+                 */
+                if (selecting) {
+                    // TODO
+                }
+            }
+
+            /**
+             * Navigation with jump to end of word
+             */
+            if (event.altKey) {
+                // TODO
+
+                /**
+                 * Navigation while selecting
+                 */
+                if (selecting) {
+                    // TODO
+                }
             }
         }
 
         if (event.key === 'ArrowUp') {
-            const text = pieceTable.current.getSequence();
-            const updatedCursor = moveCursorRow(text, cursor.current, 'up');
-            cursor.current = updatedCursor;
-            forceUpdate();
+            /**
+             * Simple navigation
+             */
+            if (noModifiers) {
+                const text = pieceTable.current.getSequence();
+                const updatedCursor = moveCursorRow(text, cursor.current, 'up');
+                cursor.current = updatedCursor;
+                forceUpdate();
+            }
+
+            /**
+             * Navigation with jump to start of editor
+             */
+            if (event.metaKey || event.ctrlKey) {
+                // TODO
+
+                /**
+                 * Navigation while selecting
+                 */
+                if (selecting) {
+                    // TODO
+                }
+            }
+
+            /**
+             * Move line up
+             */
+            if (event.altKey) {
+                // TODO
+            }
+
+            /**
+             * Copy line up
+             */
+            if (event.altKey && event.shiftKey) {
+                // TODO
+            }
         }
 
         if (event.key === 'ArrowDown') {
-            const text = pieceTable.current.getSequence();
-            const updatedCursor = moveCursorRow(text, cursor.current, 'down');
-            cursor.current = updatedCursor;
-            forceUpdate();
+            /**
+             * Simple navigation
+             */
+            if (noModifiers) {
+                const text = pieceTable.current.getSequence();
+                const updatedCursor = moveCursorRow(text, cursor.current, 'down');
+                cursor.current = updatedCursor;
+                forceUpdate();
+            }
+
+            /**
+             * Navigation with jump to start of editor
+             */
+            if (event.metaKey || event.ctrlKey) {
+                // TODO
+
+                /**
+                 * Navigation while selecting
+                 */
+                if (selecting) {
+                    // TODO
+                }
+            }
+
+            /**
+             * Move line down
+             */
+            if (event.altKey) {
+                // TODO
+            }
+
+            /**
+             * Copy line down
+             */
+            if (event.altKey && event.shiftKey) {
+                // TODO
+            }
         }
 
         if (event.key === 'Tab') {

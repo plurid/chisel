@@ -1,4 +1,6 @@
-export const getSelectionCaretAndLine = (editable: HTMLDivElement | null) => {
+export const getSelectionCaretAndLine = (
+    editable: HTMLDivElement | null,
+) => {
     try {
         if (!editable) return;
 
