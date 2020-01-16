@@ -81,50 +81,60 @@ const Chisel: React.FC<ChiselProperties> = (properties) => {
     const checkForUnpreventableKeys = (
         event: React.KeyboardEvent<HTMLDivElement>,
     ): boolean => {
+        const ctrlOrMetaKey = event.ctrlKey || event.metaKey;
+
         // Check for Cut.
         if (
-            event.key === 'x' &&
-            (event.ctrlKey || event.metaKey)
+            event.key === 'x'
+            && ctrlOrMetaKey
         ) {
             return true;
         }
 
         // Check for Copy.
         if (
-            event.key === 'c' &&
-            (event.ctrlKey || event.metaKey)
+            event.key === 'c'
+            && ctrlOrMetaKey
         ) {
             return true;
         }
 
         // Check for Paste.
         if (
-            event.key === 'v' &&
-            (event.ctrlKey || event.metaKey)
+            event.key === 'v'
+            && ctrlOrMetaKey
         ) {
             return true;
         }
 
         // Check for Refresh.
         if (
-            event.key === 'r' &&
-            (event.ctrlKey || event.metaKey)
+            event.key === 'r'
+            && ctrlOrMetaKey
         ) {
             return true;
         }
 
         // Check for Selection.
         if (
-            event.key === 'a' &&
-            (event.ctrlKey || event.metaKey)
+            event.key === 'a'
+            && ctrlOrMetaKey
         ) {
             return true;
         }
 
         // Check for Tab Close.
         if (
-            event.key === 'w' &&
-            (event.ctrlKey || event.metaKey)
+            event.key === 'w'
+            && ctrlOrMetaKey
+        ) {
+            return true;
+        }
+
+        // Check for Mac Window Hide.
+        if (
+            event.key === 'h'
+            && event.metaKey
         ) {
             return true;
         }
