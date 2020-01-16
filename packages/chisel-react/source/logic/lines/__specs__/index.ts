@@ -111,14 +111,13 @@ describe('getCurrentLine', () => {
         const result = getCurrentLine(text, cursor);
         const expected = {
             index: 2,
-            line: { index: 2, start: 5, text: '5678' },
+            line: { index: 2, start: 6, text: '5678' },
             lines: [
                 { index: 0, start: 0, text: '1234' },
-                { index: 1, start: 4, text: '' },
-                { index: 2, start: 5, text: '5678' },
+                { index: 1, start: 5, text: '' },
+                { index: 2, start: 6, text: '5678' },
             ],
         };
-        // console.log(result);
         expect(result).toEqual(expected);
     });
 });
