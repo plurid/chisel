@@ -2,7 +2,7 @@
     "name": "@plurid/chisel-react-fixture",
     "version": "0.0.0",
     "description": "React implementation of Chisel.",
-    "author": "Jan Cavel <caveljan@plurid.com> (https://plurid.com)",
+    "author": "ly3xqhl8g9 <ly3xqhl8g9@plurid.com> (https://plurid.com)",
     "license": "MIT",
     "private": true,
     "dependencies": {
