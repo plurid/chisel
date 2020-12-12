@@ -1,12 +1,12 @@
 {
     "name": "@plurid/chisel",
-    "version": "0.1.0",
+    "version": "0.0.0-0",
     "description": "Text Editor",
     "keywords": [
         "chisel"
     ],
     "author": "ly3xqhl8g9 <ly3xqhl8g9@plurid.com> (https://plurid.com)",
-    "license": "MIT",
+    "license": "SEE LICENSE IN LICENSE",
     "repository": {
         "type": "git",
         "url": "https://github.com/plurid/chisel"
@@ -16,6 +16,7 @@
         "url": "https://github.com/plurid/chisel/issues"
     },
     "publishConfig": {
+        "registry": "https://registry.npmjs.org/",
         "access": "public"
     },
     "homepage": "https://github.com/plurid/chisel/blob/master/packages/chisel/README.md",
@@ -25,9 +26,8 @@
     "main": "distribution/index.js",
     "module": "distribution/index.es.js",
     "types": "distribution/index.d.ts",
-    "jsnext:main": "distribution/index.es.js",
     "engines": {
-        "node": ">=8",
+        "node": ">=12",
         "npm": ">=6"
     },
     "scripts": {
@@ -41,13 +41,13 @@
         "prepublishOnly": "yarn build"
     },
     "peerDependencies": {
-        "@plurid/plurid-themes": ">=0",
+        "@plurid/plurid-themes": "*",
         "redux": ">=4",
         "redux-thunk": ">=2"
     },
     "devDependencies": {
         "@babel/core": "^7.7.4",
-        "@plurid/plurid-themes": "^0.1.0",
+        "@plurid/plurid-themes": "^0.0.0-0",
         "@types/jest": "^24.0.23",
         "@typescript-eslint/eslint-plugin": "^2.9.0",
         "@typescript-eslint/parser": "^2.9.0",

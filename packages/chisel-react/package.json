@@ -7,7 +7,7 @@
         "react"
     ],
     "author": "ly3xqhl8g9 <ly3xqhl8g9@plurid.com> (https://plurid.com)",
-    "license": "MIT",
+    "license": "SEE LICENSE IN LICENSE",
     "repository": {
         "type": "git",
         "url": "https://github.com/plurid/chisel"
@@ -17,6 +17,7 @@
         "url": "https://github.com/plurid/chisel/issues"
     },
     "publishConfig": {
+        "registry": "https://registry.npmjs.org/",
         "access": "public"
     },
     "homepage": "https://github.com/plurid/chisel/blob/master/packages/chisel-react/README.md",
@@ -26,9 +27,8 @@
     "main": "distribution/index.js",
     "module": "distribution/index.es.js",
     "types": "distribution/index.d.ts",
-    "jsnext:main": "distribution/index.es.js",
     "engines": {
-        "node": ">=8",
+        "node": ">=12",
         "npm": ">=6"
     },
     "scripts": {
